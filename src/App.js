@@ -182,7 +182,7 @@ class SortContainer extends React.Component {
     return (
       <div className="container justify-content-center trees">
         <div className="sorting">{this.state.array.map((number) =>
-          <div className="sortable" value={(number | 1)} style={{ height: (number | 1) + 1 + "%", backgroundColor: `hsl(177, 70%, ${60 - (number | 1) * 0.5}%)` }}></div>
+          <div className="sortable" value={(number)} style={{ height: (number) + 1 + "%", backgroundColor: `hsl(177, 70%, ${60 - (number) * 0.5}%)` }}></div>
         )}</div>
       </div>
     );
