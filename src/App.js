@@ -36,7 +36,6 @@ class SortContainer extends React.Component {
 
   slowRender(array) {
     return new Promise((resolve, reject) => {
-      this.awaitingRender = true
       setTimeout(() => {
         this.setState({ array: array }, () => {
           resolve()
@@ -168,6 +167,52 @@ class SortContainer extends React.Component {
     };
   };
 
+  async sortHeap() {
+    var arr = this.state.array
+    var boundry = arr.length
+
+    const inBounds = (i) => {
+      return i < boundry;
+    };
+
+    const left = (i) => {
+      return inBounds(i * 2 + 1) ? (i * 2 + 1) : null
+    };
+
+    const right = (i) => {
+      return inBounds(i * 2 + 2) ? (i * 2 + 2) : null
+    };
+    const downHeap = async (i) => {
+      let l, r, small;
+      while (l = left(i)) {
+        small = l;
+        if ((r = right(i))) {
+          if (arr[r] > arr[l]) {
+            small = r;
+          };
+        };
+        if (arr[small] > arr[i]) {
+          this.swap(arr, small, i);
+          i = small;
+          await this.slowRender(arr);
+        } else {
+          break;
+        };
+      };
+    };
+
+    for (let x = boundry - 1; x >= 0; x--) {
+      await downHeap(x);
+    };
+
+    while (boundry > 0){
+      boundry--;
+      this.swap(arr, 0, boundry)
+      await this.slowRender(arr)
+      await downHeap(0)
+    };
+  };
+
   // Thanks to cocco on stack overflow, shuffles an array.
   fy(a, b, c, d) {//array,placeholder,placeholder,placeholder
     c = a.length; while (c) {
@@ -188,5 +233,6 @@ class SortContainer extends React.Component {
     );
   };
 };
+
 
 export default SortContainer;
