@@ -17,7 +17,8 @@ class SortContainer extends React.Component {
       'bubble': this.sortBubble, 'heap': this.sortHeap,
       'merge': this.sortMerge, 'quick': this.sortQuick,
       'insert': this.sortInsertion, 'selection': this.sortSelection
-    }
+    };
+    
     this.make_bars = this.make_bars.bind(this)
     this.startSort = this.startSort.bind(this)
     this.slowRender = this.slowRender.bind(this)
@@ -184,7 +185,7 @@ class SortContainer extends React.Component {
     };
     const downHeap = async (i) => {
       let l, r, small;
-      while (l = left(i)) {
+      while ((l = left(i))) {
         small = l;
         if ((r = right(i))) {
           if (arr[r] > arr[l]) {

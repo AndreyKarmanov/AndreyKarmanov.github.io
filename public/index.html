@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -24,11 +24,11 @@
 
 <body>
   <br>
-  <div class="container ">
-    <div class="col list-group shadow-lg border rounded">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light list-group-item">
+  <div class="container">
+    <div class="list-group shadow-lg border rounded">
+      <nav class="bg-light list-group-item">
         <div class="container-fluid">
-          <div class="row row-cols-2 w-100">
+          <div class="row w-100">
             <div class="col mt-2">
               <select id="sortSelect" class="form-select">
                 <option selected value='-1'>Select a sort</option>
@@ -37,24 +37,24 @@
                 <option value="heap">Heap Sort</option>
                 <option value="bubble">Bubble Sort</option>
                 <option value="insert">Insertion Sort</option>
-                <option value="selection">selection Sort</option>
+                <option value="Selection">selection Sort</option>
               </select>
             </div>
-            <div class="col">
+            <div class="col-6">
               <label for="rangeSelect" class="form-label">Array Size</label>
               <input type="range" class="form-range" id="rangeSelect" min="10" max="100" step="1">
             </div>
-            <div class="col-12">
-              <hr>
-            </div>
-            <div class="col-6">
-              <button id="sort" class="btn btn-success disabled">Sort</button>
-            </div>
+            <hr class="mt-4">
+            <button id="sort" class="btn btn-success disabled">Sort</button>
           </div>
         </div>
       </nav>
       <div class="list-group-item">
-        <div id="visualizer" class="container justify-content-center sorting"></div>
+        <div id="visualizer" class="container sorting"></div>
+      </div>
+      <br>
+      <div class="list-group-item">
+        <div id="tree-visualizer" class="container sorting"></div>
       </div>
     </div>
   </div>
@@ -62,18 +62,27 @@
 <style>
   body {
     font-family: "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-}
+  }
 
-.h-125 {
-    word-wrap: break-word;
-    max-height: 125px;
-}
+  .draggable {
+    position: absolute;
+    cursor: grab;
 
-.limited {
+    padding: 10px;
+    border-radius: 50%;
+    border: 2px solid black;
+    background-color: antiquewhite;
+  }
+
+  .draggable:active {
+    cursor: grabbing;
+  }
+
+  .limited {
     -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
-}
+  }
 
-.sorting {
+  .sorting {
     flex-direction: row;
     flex-wrap: nowrap;
     display: flex;
@@ -85,53 +94,53 @@
     padding: 0;
     width: 100%;
     height: 400px;
-}
+  }
 
-.sortable {
+  .sortable {
     width: 100%;
-    margin-left: 3px;
+    margin-left: 2px;
     background-color: lightseagreen;
-}
+  }
 
-.trees {
+  .trees {
     width: 100%;
     height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
+  }
 
-div.trees canvas {
+  div.trees canvas {
     width: 100%;
     height: 100%;
-}
+  }
 
-div.leftchild {
+  div.leftchild {
     transform: translate(-100%, 150%);
-}
+  }
 
-div.rightchild {
+  div.rightchild {
     transform: translate(100%, 150%);
-}
+  }
 
-div.treenode {
+  div.treenode {
     position: absolute;
     top: 3em;
     height: 3em;
     width: 3em;
     border: 2px solid black;
     border-radius: 1.5em;
-}
+  }
 
-div.Node {
+  div.Node {
     margin: 2px 2px 2px 2px;
     width: 15px;
     height: 15px;
     border: 2px solid black;
     border-radius: 50%;
-}
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-crossorigin="anonymous"></script>
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </html>
