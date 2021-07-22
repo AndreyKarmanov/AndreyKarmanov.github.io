@@ -1,5 +1,13 @@
 import React from 'react';
 
+
+class SortBar extends React.Component {
+  constructor(props){
+    super(props);
+    this.state.number 
+  }
+};
+
 class SortContainer extends React.Component {
 
   constructor(props) {
@@ -228,7 +236,7 @@ class SortContainer extends React.Component {
     return (
       <div className="container justify-content-center trees">
         <div className="sorting">{this.state.array.map((number) =>
-          <div className="sortable" value={(number)} style={{ height: (number) + 1 + "%", backgroundColor: `hsl(177, 70%, ${60 - (number) * 0.5}%)` }}></div>
+          <div className="sortable" value={(number)} key={number} style={{ height: (number) + 1 + "%", backgroundColor: `hsl(177, 70%, ${60 - (number) * 0.5}%)` }}></div>
         )}</div>
       </div>
     );
