@@ -101,43 +101,47 @@
     background-color: lightseagreen;
   }
 
-  .trees {
-    width: 100%;
-    height: 400px;
+  .Node {
+    padding: 5% 5% 5% 5%;
+    width: 150px;
+    background-color: antiquewhite;
+    border: 3px black solid;
+    border-radius: 25%;
+
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
-  div.trees canvas {
+  .Node:hover {
+    cursor: grab;
+  }
+
+  .Node:active {
+    cursor: grabbing;
+  }
+
+  .Node input {
+    text-align: center;
+    background-color: inherit;
+    border: none;
+    width: 70%;
+  }
+
+  .AddChildButtons{
     width: 100%;
-    height: 100%;
+    height: 10px;
   }
 
-  div.leftchild {
-    transform: translate(-100%, 150%);
+  .AddChildButtons button {
+    margin: 0 5%;
+    width: 40%;
+    text-align: center;
+    padding: 5%;
+    font-size:x-small;
   }
 
-  div.rightchild {
-    transform: translate(100%, 150%);
-  }
-
-  div.treenode {
-    position: absolute;
-    top: 3em;
-    height: 3em;
-    width: 3em;
-    border: 2px solid black;
-    border-radius: 1.5em;
-  }
-
-  div.Node {
-    margin: 2px 2px 2px 2px;
-    width: 15px;
-    height: 15px;
-    border: 2px solid black;
-    border-radius: 50%;
-  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

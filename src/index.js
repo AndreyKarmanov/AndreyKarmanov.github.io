@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App.js';
-import Tree from './tree.js'
+import RenderTree from './tree3.js'
 
 const rangeSelect = document.getElementById('rangeSelect');
 const sortSelect = document.getElementById('sortSelect');
@@ -12,10 +12,10 @@ ReactDOM.render(
   document.getElementById('visualizer')
 );
 
-// ReactDOM.render(
-//     <Tree addBtn={sortBtn} valueSetter={rangeSelect}/>,
-//   document.getElementById('tree-visualizer')
-// );
+ReactDOM.render(
+    <RenderTree/>,
+  document.getElementById('tree-visualizer')
+);
 // reactDom.render(<Tree addBtn={sortBtn} valueSetter={rangeSelect}/>, document.getElementById('visualizer'))
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

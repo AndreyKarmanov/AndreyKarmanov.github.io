@@ -17,36 +17,39 @@ I basically just need to make a linked tree class in react.
     5. only have to return their childrent to the tree element, not provide it with updates. (well maybe just a +length one.)
 */
 
-import React, { Children } from 'react';
+
+// NEWE NEW plan
+// use an external data structure, such as a tree class. 
+// then use react to render it using that data, and react modifies that instead of having react be the datastructure. 
+// decouple that stuff. 
+
+import React, { createRef } from 'react';
 import Draggable from 'react-draggable';
 class Node extends React.Component {
     constructor(props) {
         super(props);
-        this.setState({
-            parent: props.parent,
-            leftChild: null,
-            rightChild: null,
-            value: props.value
-        });
-        this.forceUpdate = this.forceUpdate.bind(this);
+        this.state = {
+            value: "New value"
+        };
         this.hovered = false;
+        this.addchildren = this.addchildren.bind(this);
     };
 
     addchildren() {
         return (
             <div className="AddChildButtons">
-                {this.leftChild ? <button onClick={this.addLeft}>Add Left</button> : null}
-                {this.rightChild ? <button onClick={this.addRight}>Add Right</button> : null}
+                {!this.state.leftChild ? <button onClick={this.props.addLeft} className="btn btn-info">Add Left</button> : false}
+                {!this.state.rightChild ? <button onClick={this.props.addRight} className="btn btn-info right">Add Right</button> : false}
             </div>
         );
     };
 
     render() {
         return (
-            <Draggable onDrag={this.forceUpdate} onStop={this.forceUpdate}>
-                <div className="Node" onMouseOver={() => { this.hovered = true }} onMouseLeave={() => { this.hovered = false }}>
-                    <p>{this.value}</p>
-                    {this.hovered ? this.addchildren() : null}
+            <Draggable onDrag={() => this.forceUpdate} onStop={() => this.forceUpdate}>
+                <div className="Node" id={this.props.id} onMouseEnter={() => { this.hovered = true; this.forceUpdate(); }} onMouseLeave={() => { this.hovered = false; this.forceUpdate(); }}>
+                    <input value={this.state.value} onChange={this.valueUpdate}></input>
+                    {this.hovered ? this.addchildren() : false}
                 </div>
             </Draggable>
         );
@@ -56,25 +59,46 @@ class Node extends React.Component {
 class BinaryTree extends React.Component {
     constructor(props) {
         super(props);
-        this.root = null;
-        this.nextID = 0;
+        this.state = {
+            root: null,
+            nodes: []
+        };
+        this.currID = 0;
+        this.root = createRef()
+        this.addRoot = this.addRoot.bind(this);
+        this.forceUpdate = this.forceUpdate.bind(this);
+        this.nextID = this.nextID.bind(this);
+    };
+
+    nextID() {
+        return this.currID++;
     };
 
     addRoot() {
-        this.root = <Node key={this.nextID++}/> 
+        this.setState({ root: <Node parent={null} key={this.nextID()} id={this.nextID() - 1} nextID={this.nextID} ref={this.root} update={this.forceUpdate} /> }, () => {
+            console.log(this.state.root)
+            console.log(this.root)
+        });
+    };
+
+    iterChildren() {
+        let node = this.root;
+        let arrows = [];
+        let nodes = [];
+        let children = [];
+        let child;
+        while (children = node.Children()) {
+            nodes.push(node.current.render())
+            for (child in children) {
+                child.render()
+            }
+        }
     };
 
     render() {
-        let emptyRender;
-        if (this.root === null) {
-            emptyRender = (
-                <button onClick={this.addRoot()}>Add Root</button>
-            );
-        };
-
         return (
             <div>
-                {emptyRender}
+                {this.state.root ? this.state.root : <button onClick={this.addRoot}>Add Root</button>}
             </div>
         );
     };

@@ -1,13 +1,5 @@
 import React from 'react';
 
-
-class SortBar extends React.Component {
-  constructor(props){
-    super(props);
-    this.state.number 
-  }
-};
-
 class SortContainer extends React.Component {
 
   constructor(props) {
