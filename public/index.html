@@ -23,10 +23,9 @@
 </head>
 
 <body>
-  <br>
-  <div class="container">
-    <div class="list-group shadow-lg border rounded">
-      <nav class="bg-light list-group-item">
+  <div class="container" id="visualizer">
+    <!-- <div class="list-group shadow-lg border rounded">
+      <div class="bg-light list-group-item">
         <div class="container-fluid">
           <div class="row w-100">
             <div class="col mt-2">
@@ -41,26 +40,24 @@
             </div>
             <div class="col-6">
               <label for="rangeSelect" class="form-label">Array Size</label>
-              <input type="range" class="form-range" id="rangeSelect" min="10" max="100" step="1">
+              <input type="range" class="form-range" id="rangeSelect" min="10" max="100" step="1" />
             </div>
-            <hr class="mt-4">
+            <hr class="mt-4" />
             <button id="sort" class="btn btn-success disabled">Sort</button>
           </div>
         </div>
-      </nav>
-      <div class="list-group-item">
-        <div id="visualizer" class="container sorting"></div>
       </div>
-      <br>
       <div class="list-group-item">
-        <div id="tree-visualizer" class="container sorting"></div>
+        <div class="container sorting" id="visualizer"></div>
       </div>
-    </div>
+    </div> -->
   </div>
 </body>
 <style>
+  html,
   body {
     font-family: "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    height: 100%;
   }
 
   .draggable {
@@ -87,7 +84,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    align-content: flex-starqt;
+    align-content: flex-start;
 
     margin: 0;
     padding: 0;
@@ -102,8 +99,9 @@
   }
 
   .Node {
-    padding: 5% 5% 5% 5%;
+    padding: 15px 15px 15px 15px;
     width: 150px;
+    max-height: 57px;
     background-color: antiquewhite;
     border: 3px black solid;
     border-radius: 25%;
@@ -129,7 +127,7 @@
     width: 70%;
   }
 
-  .AddChildButtons{
+  .AddChildButtons {
     width: 100%;
     height: 10px;
   }
@@ -139,8 +137,22 @@
     width: 40%;
     text-align: center;
     padding: 5%;
-    font-size:x-small;
+    font-size: x-small;
   }
+
+  /* LINKED LIST NODES. */
+  .linkedNode.touched, .linkedNode.secondary.touched {
+    background-color: red;
+  }
+
+  .linkedNode {
+    background-color: hsl(177, 70%, 60%);
+  }
+
+  .linkedNode.secondary {
+    background-color: hsl(177, 70%, 40%);
+  }
+
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

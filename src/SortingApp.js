@@ -4,9 +4,9 @@ class SortContainer extends React.Component {
 
   constructor(props) {
     super(props);
-    this.sortBtn = props.sortBtn
-    this.rangeSelect = props.rangeSelect
-    this.sortSelect = props.sortSelect
+    this.sortBtn = document.getElementById('sort');
+    this.rangeSelect = document.getElementById('rangeSelect');
+    this.sortSelect = document.getElementById('sortSelect');
     this.state = {
       sorting: false,
       array: [],
@@ -18,7 +18,7 @@ class SortContainer extends React.Component {
       'merge': this.sortMerge, 'quick': this.sortQuick,
       'insert': this.sortInsertion, 'selection': this.sortSelection
     };
-    
+
     this.make_bars = this.make_bars.bind(this)
     this.startSort = this.startSort.bind(this)
     this.slowRender = this.slowRender.bind(this)
@@ -53,15 +53,15 @@ class SortContainer extends React.Component {
 
   startSort() {
     if (this.sorting || this.sortSelect.value === "-1") {
-      return
+      return;
     };
-    this.sorting = true
-    console.log(this.sortSelect.value, 'selected')
+    this.sorting = true;
+    console.log(this.sortSelect.value, 'selected');
     this.sortTypes[this.sortSelect.value].bind(this)().then(() => {
-      this.sorting = false
-      console.log('sorting complete')
+      this.sorting = false;
+      console.log('sorting complete');
     });
-    console.log('done starting')
+    console.log('done starting');
   }
 
   swap(arr, a, b) {
@@ -206,7 +206,7 @@ class SortContainer extends React.Component {
       await downHeap(x);
     };
 
-    while (boundry > 0){
+    while (boundry > 0) {
       boundry--;
       this.swap(arr, 0, boundry)
       await this.slowRender(arr)

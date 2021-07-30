@@ -84,16 +84,16 @@ class RenderNode extends React.Component {
     addchildren() {
         return (
             <div className="AddChildButtons">
-                {!this.props.left ? <button onClick={this.dragged ? null : this.props.addLeft} className="btn btn-info" style={{ position: 'absolute', marginLeft: '0px' }}>Left</button> : false}
-                {!this.props.right ? <button onClick={this.dragged ? null : this.props.addRight} className="btn btn-info right" style={{ position: 'absolute', left: '50%' }}>Right</button> : false}
+                {!this.props.left && this.hovered ? <button onClick={this.dragged ? null : this.props.addLeft} className="btn btn-info" style={{ position: 'absolute', marginLeft: '0px' }}>Left</button> : false}
+                {!this.props.right && this.hovered ? <button onClick={this.dragged ? null : this.props.addRight} className="btn btn-info right" style={{ position: 'absolute', left: '50%' }}>Right</button> : false}
             </div>
         );
     };
 
     render() {
         return (
-            <Draggable onDrag={() => { this.forceUpdate(); this.dragged = true }} onStop={() => { this.props.updateAll(); this.dragged = false }}>
-                <div className="Node" id={this.props.id}>
+            <Draggable onDrag={() => { this.props.updateAll(); this.dragged = true }} onStop={() => { this.props.updateAll(); this.dragged = false }}>
+                <div className="Node" id={this.props.id} onMouseOver={() => { this.hovered = true; this.forceUpdate(); }} onMouseLeave={() => { this.hovered = false; this.forceUpdate(); }}>
                     <input value={this.props.value} onInput={(e) => { this.props.updateValue(e.target.value) }} />
                     {this.addchildren()}
                 </div>
@@ -111,7 +111,7 @@ class RenderTree extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{ height: "100%" }}>
                 {
                     this.tree.root ? null : <button onClick={() => { this.tree.root = new Node('xx', null); this.forceUpdate(); }}>Add Root</button>
                 }

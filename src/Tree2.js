@@ -29,19 +29,60 @@ class Node extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            parent: props.parent,
+            leftChild: null,
+            rightChild: null,
             value: "New value"
         };
+
+        // this.forceUpdate = this.forceUpdate.bind(this);
         this.hovered = false;
+        this.leftChild = createRef()
+        this.rightChild = createRef()
+
+        this.valueUpdate = this.valueUpdate.bind(this);
+        this.addLeft = this.addLeft.bind(this);
+        this.addRight = this.addRight.bind(this);
         this.addchildren = this.addchildren.bind(this);
+        this.children = this.children.bind(this);
+    };
+
+    children() {
+        let out = [];
+        if (this.leftChild.current) {
+            out.push(this.leftChild.current);
+        };
+        if (this.rightChild.current) {
+            out.push(this.rightChild.current);
+        };
+        return out;
+    };
+
+    addLeft() {
+        this.setState({
+            leftChild: <Node parent={this} key={this.props.nextID()} id={this.props.nextID() - 1} nextID={this.props.nextID} ref={this.leftChild} />
+        });
+    };
+
+    addRight() {
+        this.setState({
+            rightChild: <Node parent={this} key={this.props.nextID()} id={this.props.nextID() - 1} nextID={this.props.nextID} ref={this.rightChild} />
+        });
     };
 
     addchildren() {
         return (
             <div className="AddChildButtons">
-                {!this.state.leftChild ? <button onClick={this.props.addLeft} className="btn btn-info">Add Left</button> : false}
-                {!this.state.rightChild ? <button onClick={this.props.addRight} className="btn btn-info right">Add Right</button> : false}
+                {!this.state.leftChild ? <button onClick={this.addLeft} className="btn btn-info">Add Left</button> : false}
+                {!this.state.rightChild ? <button onClick={this.addRight} className="btn btn-info right">Add Right</button> : false}
             </div>
         );
+    };
+
+    valueUpdate(e) {
+        this.setState({
+            value: e.target.value
+        });
     };
 
     render() {
