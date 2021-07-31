@@ -1,7 +1,8 @@
 import React, { createRef } from 'react';
 import LinkedApp, { Linked } from './Linked.js';
+import SkipListVisualizer, { SkipList } from './SkipList.js';
 
-class DataStructureInterface extends React.Component {
+class DataStructureInterface extends React.PureComponent {
     constructor(props) {
         super(props);
         this.inputValue = createRef();
@@ -52,24 +53,23 @@ class DataStructuresApp extends React.Component {
             structure: 'skiplist'
         };
 
-
         this.clearStructure = this.clearStructure.bind(this);
         this.updateStructure = this.updateStructure.bind(this);
         this.addValue = this.addValue.bind(this);
         this.delValue = this.delValue.bind(this);
         this.animate = this.animate.bind(this);
         this.list = new Linked(this.animate, this.animate, this.animate)
+        this.skiplist = new SkipList(this.animate)
 
     };
 
     componentDidMount() {
-        this.list.insertOrdered(1);
-        this.list.insertOrdered(1);
-        this.list.insertOrdered(1);
+        this.skiplist.insertOrdered(1);
+        this.skiplist.insertOrdered(2);
+        this.skiplist.insertOrdered(3);
     };
 
     animate() {
-        console.log('it should have swrds')
         this.forceUpdate()
     };
 
@@ -84,9 +84,15 @@ class DataStructuresApp extends React.Component {
     };
 
     addValue(value) {
-        if (value) {
+
+        if (value !== '') {
+            try {
+                value = parseFloat(value);
+            } catch (e) {
+                console.log('it was a string ok I guess.')
+            };
             console.log(value);
-            this.list.insertOrdered(value);
+            this.skiplist.insertOrdered(value);
         };
     };
 
@@ -106,7 +112,7 @@ class DataStructuresApp extends React.Component {
                     </div>
                 </div>
                 <div className="list-group-item">
-                    <LinkedApp structure={this.list}/>
+                    <SkipListVisualizer structure={this.skiplist}/>
                 </div>
             </div>
         );
