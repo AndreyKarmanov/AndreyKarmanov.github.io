@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import LinkedApp, { Linked } from './Linked.js';
-import SkipListVisualizer, { SkipList } from './SkipList.js';
+import SkipListVisualizer, { SkipList } from './SkipList2.js';
 
 class DataStructureInterface extends React.PureComponent {
     constructor(props) {
