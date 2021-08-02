@@ -1,7 +1,6 @@
 import React from 'react';
 import Xarrow, { Xwrapper } from 'react-xarrows';
 import { highlightClass } from './General';
-import Draggable from 'react-draggable';
 
 var nextID = 0;
 class Item {
@@ -143,7 +142,7 @@ export class SkipList {
                 belowNode.above = newNode;
             };
             await this.addAfter(previousNode, belowNode = newNode);
-            if (h > this.h) {
+            if (h == this.h + 1) {
                 this.h++;
 
                 let newTopRight = new SkipNode(new Item(Infinity), null, this.topRight, this.len - 1)
@@ -182,6 +181,7 @@ class SkipListVisualizer extends React.Component {
 
     renderCol(bottomNode) {
         let column = [...this.props.structure.iterCol(bottomNode)];
+        // make thte unused arrows opacity at 50% or something.
         return (
             <div className="d-flex flex-column-reverse m-2">
                 <Xwrapper>

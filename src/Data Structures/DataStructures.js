@@ -115,7 +115,12 @@ class DataStructuresApp extends React.Component {
                         </div>
                     </div>
                     <div className="list-group-item h-100 overflow-hidden">
-                        <SkipListVisualizer structure={this.skiplist} className="draggable" />
+                        <Draggable>
+                            <div>
+                                <SkipListVisualizer structure={this.skiplist} className="draggable" />
+
+                            </div>
+                        </Draggable>
 
                     </div>
                 </div>
