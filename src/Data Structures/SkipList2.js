@@ -16,6 +16,8 @@ class SkipNode {
         this.below = below;
         this.index = index;
         this.highlight = highlight;
+        this.highlightBelow = false;
+        this.highlightRight = false;
         this.id = nextID++;
         this.arrowID = nextID++;
 
@@ -33,8 +35,8 @@ export class SkipList {
 
         this.topLeft = new SkipNode(new Item(-Infinity), this.topRight, null, 0);
         this.len = 2;
-        this.h = 0;
-
+        this.h = 1;
+        this.resettable = [];
     };
 
     *iterCol(bottom) {
@@ -71,30 +73,44 @@ export class SkipList {
         };
     };
 
-    animate(node, highlight) {
+    animate(node, highlight, hold = false) {
         return new Promise((resolve) => {
             setTimeout(() => {
                 node.highlight = highlight;
                 this.onUpdate();
-                node.highlight = 0;
+                if (!hold) {
+                    node.highlight = 0;
+                };
                 resolve();
             }, 150);
         });
+    };
+
+    resetHighlights() {
+        for (let node of this.resettable) {
+            node.highlight = 0;
+            node.highlightBelow = false;
+            node.highlightRight = false;
+        };
     };
 
     async findPreviousNodes(value) {
         let node = this.topLeft;
         let previousNodes = [];
         while (true) {
-            await this.animate(node, 2);
-            if (node.next.item.value > value) {
+            await this.animate(node, 2, true);
+            this.resettable.push(node);
+            if (node.next.item.value >= value) {
                 previousNodes.push(node);
                 if (node.below) {
+                    node.highlightBelow = true;
                     node = node.below
                 } else {
+                    node.highlightRight = true;
                     return previousNodes;
                 };
             } else {
+                node.highlightRight = true;
                 node = node.next;
             };
         };
@@ -105,21 +121,30 @@ export class SkipList {
     };
 
     async delValue(value) {
+        value = String(value);
         let previous = await this.findPreviousNodes(value, true);
         for (let node of previous) {
-            if (node.next.value === value) {
-                this.delAfter(node, node.next);
-                await this.animate(node, 2);
-                this.onUpdate();
+            console.log(node, node.next.item.value === value, value, node.next.item.value);
+            if (String(node.next.item.value) === value) {
+                console.log(node);
+                if (node.next.below){
+                    node.next.below.above = null;
+                }else{
+                    this.len--;
+                };
+                node.next = node.next.next;
+                await this.animate(node, 2, true);
             };
         };
+        this.resetHighlights();
     };
 
     async addAfter(previous, newNode) {
         newNode.next = previous.next;
         previous.next = newNode;
         newNode.index = previous.index + 1;
-        await this.animate(newNode, 1);
+        await this.animate(newNode, 1, true);
+        this.resettable.push(newNode);
     };
 
     async insertOrdered(value) {
@@ -128,21 +153,14 @@ export class SkipList {
         let previousNode = previous[previous.length - h];
         let belowNode = null;
         let item = new Item(value);
+        let newNode;
         this.len++;
         let runt = () => {
             let p = Math.random();
-            console.log(p, p > 0.5);
-            console.log(p, p > 0.5);
             return p > 0.5;
         }
-
         do {
-            let newNode = new SkipNode(item, previousNode.next, belowNode, previous.next, 0)
-            if (belowNode) {
-                belowNode.above = newNode;
-            };
-            await this.addAfter(previousNode, belowNode = newNode);
-            if (h == this.h + 1) {
+            if (h > this.h) {
                 this.h++;
 
                 let newTopRight = new SkipNode(new Item(Infinity), null, this.topRight, this.len - 1)
@@ -155,10 +173,17 @@ export class SkipList {
                 this.topLeft = newTopLeft;
 
                 previous.splice(0, 0, this.topLeft);
+                previousNode = previous[previous.length - h];
             };
+            newNode = new SkipNode(item, previousNode.next, belowNode, previous.next, 0)
+            if (belowNode) {
+                belowNode.above = newNode;
+            };
+            await this.addAfter(previousNode, belowNode = newNode);
             previousNode = previous[previous.length - ++h];
 
         } while (runt());
+        this.resetHighlights();
     };
 };
 
@@ -195,7 +220,9 @@ class SkipListVisualizer extends React.Component {
                     {column.map((node) => {
                         if (node.next) {
                             return (
-                                <Xarrow start={String(node.id)} end={String(node.next.id)} key={nextID++} headSize={4} />
+                                <div style={{ opacity: node.highlightRight ? '100%' : '30%' }}>
+                                    <Xarrow start={String(node.id)} end={String(node.next.id)} key={nextID++} headSize={4} />
+                                </div>
                             );
                         } else {
                             return null;
@@ -205,7 +232,9 @@ class SkipListVisualizer extends React.Component {
                     {column.map((node) => {
                         if (node.below) {
                             return (
-                                <Xarrow start={String(node.id)} end={String(node.below.id)} key={nextID++} headSize={4} />
+                                <div style={{ opacity: node.highlightBelow ? '100%' : '30%' }}>
+                                    <Xarrow start={String(node.id)} end={String(node.below.id)} key={nextID++} headSize={4} s />
+                                </div>
                             );
                         } else {
                             return null;
