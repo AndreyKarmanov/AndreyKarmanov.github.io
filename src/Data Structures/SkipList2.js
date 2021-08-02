@@ -1,5 +1,7 @@
 import React from 'react';
-import Xarrow, { useXarrow, Xwrapper } from 'react-xarrows';
+import Xarrow, { Xwrapper } from 'react-xarrows';
+import { highlightClass } from './General';
+import Draggable from 'react-draggable';
 
 var nextID = 0;
 class Item {
@@ -12,7 +14,7 @@ class SkipNode {
     constructor(item, next = null, below = null, index = null, highlight = 0) {
         this.item = item;
         this.next = next;
-        this.below = below; 
+        this.below = below;
         this.index = index;
         this.highlight = highlight;
         this.id = nextID++;
@@ -70,10 +72,22 @@ export class SkipList {
         };
     };
 
-    findPreviousNodes(value) {
+    animate(node, highlight) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                node.highlight = highlight;
+                this.onUpdate();
+                node.highlight = 0;
+                resolve();
+            }, 150);
+        });
+    };
+
+    async findPreviousNodes(value) {
         let node = this.topLeft;
         let previousNodes = [];
         while (true) {
+            await this.animate(node, 2);
             if (node.next.item.value > value) {
                 previousNodes.push(node);
                 if (node.below) {
@@ -87,26 +101,48 @@ export class SkipList {
         };
     };
 
-    addAfter(previous, newNode) {
+    delAfter(previous, node) {
+        previous.next = node.next;
+    };
+
+    async delValue(value) {
+        let previous = await this.findPreviousNodes(value, true);
+        for (let node of previous) {
+            if (node.next.value === value) {
+                this.delAfter(node, node.next);
+                await this.animate(node, 2);
+                this.onUpdate();
+            };
+        };
+    };
+
+    async addAfter(previous, newNode) {
         newNode.next = previous.next;
         previous.next = newNode;
         newNode.index = previous.index + 1;
+        await this.animate(newNode, 1);
     };
 
-    insertOrdered(value) {
-        let previous = this.findPreviousNodes(value);
+    async insertOrdered(value) {
+        let previous = await this.findPreviousNodes(value);
         let h = 1;
         let previousNode = previous[previous.length - h];
         let belowNode = null;
         let item = new Item(value);
         this.len++;
+        let runt = () => {
+            let p = Math.random();
+            console.log(p, p > 0.5);
+            console.log(p, p > 0.5);
+            return p > 0.5;
+        }
 
         do {
             let newNode = new SkipNode(item, previousNode.next, belowNode, previous.next, 0)
             if (belowNode) {
                 belowNode.above = newNode;
             };
-            this.addAfter(previousNode, belowNode = newNode);
+            await this.addAfter(previousNode, belowNode = newNode);
             if (h > this.h) {
                 this.h++;
 
@@ -122,35 +158,44 @@ export class SkipList {
                 previous.splice(0, 0, this.topLeft);
             };
             previousNode = previous[previous.length - ++h];
-        } while (Math.random() > 0.5);
-        this.onUpdate();
+
+        } while (runt());
     };
 };
 
 class SkipListVisualizer extends React.Component {
 
-    componentDidMount() {
-        this.props.structure.printAll();
+    constructor(props) {
+        super(props);
+        this.toSymbol = this.toSymbol.bind(this);
+    };
+
+    toSymbol(value) {
+        if (value === Infinity) {
+            return "∞";
+        } else if (value === -Infinity) {
+            return "-∞";
+        } else {
+            return value;
+        };
     };
 
     renderCol(bottomNode) {
         let column = [...this.props.structure.iterCol(bottomNode)];
         return (
-            <div className="d-flex flex-column-reverse m-3">
+            <div className="d-flex flex-column-reverse m-2">
                 <Xwrapper>
                     {column.map((node) => {
-                        if (node.item.value === -Infinity){
-                            console.log(node.id, node.next.id);
-                        };
-
                         return (
-                            <div className="SkipNode border rounded m-1 p-2 text-center" id={node.id} key={node.id}>{node.item.value}</div>
+                            <div className={"SkipNode border rounded m-3 p-2 text-center fs-6 " + highlightClass[node.highlight]} id={node.id} key={node.id}>
+                                {this.toSymbol(node.item.value)}
+                            </div>
                         );
                     })}
                     {column.map((node) => {
                         if (node.next) {
                             return (
-                                <Xarrow start={String(node.id)} end={String(node.next.id)} key={node.id} updated={this.props.structure.len} />
+                                <Xarrow start={String(node.id)} end={String(node.next.id)} key={nextID++} headSize={4} />
                             );
                         } else {
                             return null;
@@ -158,12 +203,14 @@ class SkipListVisualizer extends React.Component {
 
                     })}
                     {column.map((node) => {
-                        if (!node.below) {
+                        if (node.below) {
+                            return (
+                                <Xarrow start={String(node.id)} end={String(node.below.id)} key={nextID++} headSize={4} />
+                            );
+                        } else {
                             return null;
                         };
-                        return (
-                            <Xarrow start={String(node.id)} end={String(node.below.id)} key={node.id} updated={this.props.structure.len} />
-                        );
+
                     })}
 
                 </Xwrapper>

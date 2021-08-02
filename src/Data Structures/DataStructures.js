@@ -1,4 +1,5 @@
 import React, { createRef } from 'react';
+import Draggable from 'react-draggable';
 import LinkedApp, { Linked } from './Linked.js';
 import SkipListVisualizer, { SkipList } from './SkipList2.js';
 
@@ -64,9 +65,9 @@ class DataStructuresApp extends React.Component {
     };
 
     componentDidMount() {
-        this.skiplist.insertOrdered(1);
-        this.skiplist.insertOrdered(2);
-        this.skiplist.insertOrdered(3);
+        // this.skiplist.insertOrdered(1);
+        // this.skiplist.insertOrdered(2);
+        // this.skiplist.insertOrdered(3);
     };
 
     animate() {
@@ -100,21 +101,26 @@ class DataStructuresApp extends React.Component {
     delValue(value) {
         if (value) {
             console.log('del value; ', value);
+            this.skiplist.delValue(value);
         };
     };
 
     render() {
         return (
-            <div className="list-group shadow-lg border rounded">
-                <div className="bg-light list-group-item">
-                    <div className="container-fluid">
-                        <DataStructureInterface structureChange={this.updateStructure} structureValue={this.state.structure} addValue={this.addValue} delValue={this.delValue} clearStructure={this.clearStructure} />
+            <div className="vh-100">
+                <div className="list-group shadow-lg border rounded h-75">
+                    <div className="bg-light list-group-item">
+                        <div className="container-fluid">
+                            <DataStructureInterface structureChange={this.updateStructure} structureValue={this.state.structure} addValue={this.addValue} delValue={this.delValue} clearStructure={this.clearStructure} />
+                        </div>
+                    </div>
+                    <div className="list-group-item h-100 overflow-hidden">
+                        <SkipListVisualizer structure={this.skiplist} className="draggable" />
+
                     </div>
                 </div>
-                <div className="list-group-item">
-                    <SkipListVisualizer structure={this.skiplist}/>
-                </div>
             </div>
+
         );
     };
 };

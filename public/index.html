@@ -60,7 +60,7 @@
     height: 100%;
   }
 
-  .draggable {
+  /* .draggable {
     position: absolute;
     cursor: grab;
 
@@ -72,7 +72,7 @@
 
   .draggable:active {
     cursor: grabbing;
-  }
+  } */
 
   .limited {
     -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
@@ -140,6 +140,15 @@
     font-size: x-small;
   }
 
+  /* draggable */
+  .draggable {
+    cursor: grab;
+  }
+
+  .draggable:active {
+    cursor: grabbing;
+  }
+
   /* LINKED LIST NODES. */
   .linkedNode.touched {
     background-color: orange;
@@ -159,6 +168,14 @@
     background-color: hsl(177, 70%, 60%);
     min-width: 50px;
     min-height: 50px;
+  }
+
+  .SkipNode.touched {
+    background-color: orange;
+  }
+
+  .SkipNode.updated {
+    background-color: lightgreen;
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
