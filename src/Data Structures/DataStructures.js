@@ -93,13 +93,13 @@ class DataStructuresApp extends React.Component {
             };
             console.log(value);
             this.skiplist.insertOrdered(value);
+            this.forceUpdate();
         };
     };
 
     delValue(value) {
         if (value) {
             console.log('del value; ', value);
-            this.forceUpdate()
         };
     };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Xarrow from 'react-xarrows/lib';
+import Xarrow, { useXarrow, Xwrapper } from 'react-xarrows';
 
 var nextID = 0;
 class Item {
@@ -12,10 +12,11 @@ class SkipNode {
     constructor(item, next = null, below = null, index = null, highlight = 0) {
         this.item = item;
         this.next = next;
-        this.below = below;
+        this.below = below; 
         this.index = index;
         this.highlight = highlight;
         this.id = nextID++;
+        this.arrowID = nextID++;
 
         // above is only needed to ease rendering. Not necessary for a basic skiplist.
         this.above = null;
@@ -136,22 +137,38 @@ class SkipListVisualizer extends React.Component {
         let column = [...this.props.structure.iterCol(bottomNode)];
         return (
             <div className="d-flex flex-column-reverse m-3">
-                {column.map((node) => {
-                    return (
-                        <div className="SkipNode border rounded m-1 p-2 text-center" id={node.id} key={node.id}>{node.item.value}</div>
-                    );
-                })}
+                <Xwrapper>
+                    {column.map((node) => {
+                        if (node.item.value === -Infinity){
+                            console.log(node.id, node.next.id);
+                        };
 
-                {column.map((node) => {
-                    if (!node.below) {
-                        return null;
-                    };
-                    console.log(node.id, node.below.id);
-                    return (
-                        <Xarrow start={String(node.id)} end={String(node.below.id)} key={node.id} />
-                );
-                })}
+                        return (
+                            <div className="SkipNode border rounded m-1 p-2 text-center" id={node.id} key={node.id}>{node.item.value}</div>
+                        );
+                    })}
+                    {column.map((node) => {
+                        if (node.next) {
+                            return (
+                                <Xarrow start={String(node.id)} end={String(node.next.id)} key={node.id} updated={this.props.structure.len} />
+                            );
+                        } else {
+                            return null;
+                        };
+
+                    })}
+                    {column.map((node) => {
+                        if (!node.below) {
+                            return null;
+                        };
+                        return (
+                            <Xarrow start={String(node.id)} end={String(node.below.id)} key={node.id} updated={this.props.structure.len} />
+                        );
+                    })}
+
+                </Xwrapper>
             </div>
+
         );
     };
 
