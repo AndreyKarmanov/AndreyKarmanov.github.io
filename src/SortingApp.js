@@ -19,12 +19,13 @@ class SortContainer extends React.Component {
       'insert': this.sortInsertion, 'selection': this.sortSelection
     };
 
-    this.make_bars = this.make_bars.bind(this)
-    this.startSort = this.startSort.bind(this)
-    this.slowRender = this.slowRender.bind(this)
-    this.sortMergeRecur = this.sortMergeRecur.bind(this)
-    this.sortQuickRecur = this.sortQuickRecur.bind(this)
-    this.sorting = false
+    this.make_bars = this.make_bars.bind(this);
+    this.startSort = this.startSort.bind(this);
+    this.slowRender = this.slowRender.bind(this);
+    this.sortMergeRecur2 = this.sortMergeRecur2.bind(this);
+    this.sortMergeMerge = this.sortMergeMerge.bind(this);
+    this.sortQuickRecur = this.sortQuickRecur.bind(this);
+    this.sorting = false;
   };
 
 
@@ -78,7 +79,7 @@ class SortContainer extends React.Component {
           this.swap(a, x, x + 1);
           unsorted = true;
           await this.slowRender(a);
-        }
+        };
       };
     };
   };
@@ -98,36 +99,70 @@ class SortContainer extends React.Component {
   };
 
   async sortMerge() {
-    await this.sortMergeRecur(this.state.array, 0, this.state.array.length)
+    await this.sortMergeRecur2(this.state.array, 0, this.state.array.length);
   };
 
-  async sortMergeRecur(arr, l, r) {
-    if (arr.slice(l, r).length > 1) {
-      let middle = Math.floor(arr.slice(l, r).length / 2)
-      let a = await this.sortMergeRecur(arr, l, l + middle)
-      let b = await this.sortMergeRecur(arr, l + middle, r)
-      let little = null
-      let pointer = l
-      while (pointer < r) {
-        if (a.length > 0) {
-          if (b.length > 0) {
-            if (a[0] > b[0]) {
-              little = b.shift();
-            } else {
-              little = a.shift();
-            };
-          } else {
-            little = a.shift();
-          };
-        } else {
-          little = b.shift();
-        };
-        arr[pointer++] = little;
-        await this.slowRender(arr);
-      };
+  async sortMergeRecur2(arr, l, r) {
+    if (r - l > 1) {
+      let middle = Math.floor((r - l) / 2) + l;
+      await this.sortMergeRecur2(arr, l, middle);
+      await this.sortMergeRecur2(arr, middle, r);
+      await this.sortMergeMerge(arr, l, middle, r);
     };
-    return arr.slice(l, r)
   };
+
+  async sortMergeMerge(arr, l, middle, r) {
+    let left = arr.slice(l, middle);
+    let right = arr.slice(middle, r);
+    let pointer = l;
+
+    while (left.length && right.length) {
+      if (left[0] > right[0]) {
+        arr[pointer++] = left.shift();
+      } else {
+        arr[pointer++] = right.shift();
+      };
+      await this.slowRender(arr)
+    };
+
+    while (left.length) {
+      arr[pointer++] = left.shift();
+      await this.slowRender(arr)
+    };
+    while (right.length) {
+      arr[pointer++] = right.shift();
+      await this.slowRender(arr)
+    };
+  };
+
+
+  // async sortMergeRecur(arr, l, r) {
+  //   if (arr.slice(l, r).length > 1) {
+  //     let middle = Math.floor(arr.slice(l, r).length / 2)
+  //     let a = await this.sortMergeRecur(arr, l, l + middle)
+  //     let b = await this.sortMergeRecur(arr, l + middle, r)
+  //     let little = null
+  //     let pointer = l
+  //     while (pointer < r) {
+  //       if (a.length > 0) {
+  //         if (b.length > 0) {
+  //           if (a[0] > b[0]) {
+  //             little = b.shift();
+  //           } else {
+  //             little = a.shift();
+  //           };
+  //         } else {
+  //           little = a.shift();
+  //         };
+  //       } else {
+  //         little = b.shift();
+  //       };
+  //       arr[pointer++] = little;
+  //       await this.slowRender(arr);
+  //     };
+  //   };
+  //   return arr.slice(l, r)
+  // };
 
   async sortInsertion() {
     let a = this.state.array

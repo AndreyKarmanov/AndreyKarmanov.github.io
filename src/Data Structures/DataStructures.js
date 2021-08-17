@@ -85,12 +85,9 @@ class DataStructuresApp extends React.Component {
     };
 
     addValue(value) {
-
         if (value !== '') {
-            try {
-                value = parseFloat(value);
-            } catch (e) {
-                console.log('it was a string ok I guess.')
+            if (!isNaN(value)) {
+                value = Number(value)
             };
             console.log(value);
             this.skiplist.insertOrdered(value);

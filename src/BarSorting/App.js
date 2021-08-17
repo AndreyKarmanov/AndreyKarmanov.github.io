@@ -22,7 +22,7 @@ class SortingApp extends React.Component {
         this.make_bars = this.make_bars.bind(this);
         this.startSort = this.startSort.bind(this);
         this.slowRender = this.slowRender.bind(this);
-        this.sortMergeRecur = this.sortMergeRecur.bind(this);
+        this.sortMergeRecur2 = this.sortMergeRecur2.bind(this);
         this.sortQuickRecur = this.sortQuickRecur.bind(this);
         this.sorting = false;
     };
@@ -77,6 +77,7 @@ class SortingApp extends React.Component {
         this.sortTypes[this.state.sortValue].bind(this)().then(() => {
             this.sorting = false
             console.log('sorting complete')
+            this.forceUpdate();
         });
         console.log('done starting')
     }
@@ -115,36 +116,93 @@ class SortingApp extends React.Component {
     };
 
     async sortMerge() {
-        await this.sortMergeRecur(this.state.blocks, 0, this.state.blocks.length)
+        await this.sortMergeRecur2(this.state.blocks, 0, this.state.blocks.length)
     };
 
-    async sortMergeRecur(arr, l, r) {
-        if (arr.slice(l, r).length > 1) {
-            let middle = Math.floor(arr.slice(l, r).length / 2)
-            let a = await this.sortMergeRecur(arr, l, l + middle)
-            let b = await this.sortMergeRecur(arr, l + middle, r)
-            let little = null
-            let pointer = l
-            while (pointer < r) {
-                if (a.length > 0) {
-                    if (b.length > 0) {
-                        if (a[0] > b[0]) {
-                            little = b.shift();
-                        } else {
-                            little = a.shift();
-                        };
-                    } else {
-                        little = a.shift();
-                    };
-                } else {
-                    little = b.shift();
-                };
-                arr[pointer++] = little;
-                await this.slowRender(arr);
+    async sortMergeRecur2(arr, l, r) {
+        // inplace merge sort.
+        if (r - l > 1) {
+            let middle = Math.floor((r - l) / 2) + l;
+            await this.sortMergeRecur2(arr, l, middle);
+            await this.sortMergeRecur2(arr, middle, r);
+            await this.sortMergeMerge2(arr, l, middle, r);
+        };
+    };
+
+    // async sortMergeMerge(arr, l, middle, r) {
+    //     let left = arr.slice(l, middle);
+    //     let right = arr.slice(middle, r);
+    //     let pointer = l;
+
+    //     while (left.length && right.length) {
+    //         if (left[0] < right[0]) {
+    //             arr[pointer++] = left.shift();
+    //         } else {
+    //             arr[pointer++] = right.shift();
+    //         };
+    //         await this.slowRender(arr)
+    //     };
+
+    //     while (left.length) {
+    //         arr[pointer++] = left.shift();
+    //         await this.slowRender(arr)
+    //     };
+    //     while (right.length) {
+    //         arr[pointer++] = right.shift();
+    //         await this.slowRender(arr)
+    //     };
+    // };
+
+    async sortMergeMerge2(arr, l, middle, r) {
+        // inplace merge.
+        let newValue = null;
+        while (l < middle && middle < r) {
+            if (arr[l] < arr[middle]) {
+                l++;
+                await this.slowRender(arr)
+
+            } else {
+                newValue = arr[middle];
+                arr.splice(middle++, 1);
+                arr.splice(l++, 0, newValue);
+                await this.slowRender(arr)
             };
         };
-        return arr.slice(l, r)
+
+        if (middle < r) {
+            let slice = arr.slice(middle, r);
+            arr.splice(middle, slice.length, ...slice);
+            await this.slowRender(arr)
+        };
     };
+
+    // async sortMergeRecur(arr, l, r) {
+    //     if (arr.slice(l, r).length > 1) {
+    //         let middle = Math.floor(arr.slice(l, r).length / 2)
+    //         let a = await this.sortMergeRecur(arr, l, l + middle)
+    //         let b = await this.sortMergeRecur(arr, l + middle, r)
+    //         let little = null
+    //         let pointer = l
+    //         while (pointer < r) {
+    //             if (a.length > 0) {
+    //                 if (b.length > 0) {
+    //                     if (a[0] > b[0]) {
+    //                         little = b.shift();
+    //                     } else {
+    //                         little = a.shift();
+    //                     };
+    //                 } else {
+    //                     little = a.shift();
+    //                 };
+    //             } else {
+    //                 little = b.shift();
+    //             };
+    //             arr[pointer++] = little;
+    //             await this.slowRender(arr);
+    //         };
+    //     };
+    //     return arr.slice(l, r)
+    // };
 
     async sortInsertion() {
         let a = this.state.blocks
@@ -236,11 +294,11 @@ class SortingApp extends React.Component {
             <div className="list-group shadow-lg border rounded">
                 <div className="bg-light list-group-item">
                     <div className="container-fluid">
-                        <SortingOptions updateSort={this.updateSort} startSort={this.startSort} updateSize={this.make_bars} sortSize={this.state.sortSize} sortValue={this.state.sortValue} />
+                        <SortingOptions updateSort={this.updateSort} startSort={this.startSort} updateSize={this.make_bars} sortSize={this.state.sortSize} sortValue={this.state.sortValue} sorting={this.sorting}/>
                     </div>
                 </div>
                 <div className="list-group-item">
-                    <div className="container justify-content-center sorting">
+                    <div className="container justify-content-center sorting ">
                         {this.state.blocks.map((number) => <div className="sortable" key={number} style={{ height: (number) + 1 + "%", backgroundColor: `hsl(177, 70%, ${60 - (number) * 0.5}%)` }}></div>)}
                     </div>
                 </div>

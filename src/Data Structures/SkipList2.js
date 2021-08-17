@@ -100,7 +100,7 @@ export class SkipList {
         while (true) {
             await this.animate(node, 2, true);
             this.resettable.push(node);
-            if (node.next.item.value >= value) {
+            if (node.next.item.value >= value || node.next.item.value === Infinity) {
                 previousNodes.push(node);
                 if (node.below) {
                     node.highlightBelow = true;
@@ -200,7 +200,7 @@ class SkipListVisualizer extends React.Component {
         } else if (value === -Infinity) {
             return "-∞";
         } else {
-            return value;
+            return String(value);
         };
     };
 
