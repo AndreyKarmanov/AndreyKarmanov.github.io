@@ -57,7 +57,10 @@
   html,
   body {
     font-family: "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    height: 100%;
+  }
+
+  body {
+    margin-bottom: 15px;
   }
 
   /* .draggable {
@@ -85,10 +88,6 @@
     justify-content: center;
     align-items: center;
     align-content: flex-start;
-
-    margin: 0;
-    padding: 0;
-    width: 100%;
     height: 400px;
   }
 
@@ -96,6 +95,13 @@
     width: 100%;
     margin-left: 2px;
     background-color: lightseagreen;
+  }
+
+  .bottom {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 400px;
   }
 
   .Node {
@@ -176,6 +182,54 @@
 
   .SkipNode.updated {
     background-color: lightgreen;
+  }
+
+  /* GRAPH GRID */
+  .GridSquare {
+    -webkit-user-drag: none;
+    user-select: none;
+    padding-bottom: 100%;
+    height: 100%;
+    background-color: bisque;
+    transition-duration: 100ms;
+    transition: width height ease-in-out;
+  }
+
+  /* 
+  .GridSquare:active {
+    transform: scale(0.9, 0.9);
+  } */
+
+  html:active .GridSquare:hover {
+    transition-duration: 50ms;
+    transition: width height ease-in-out;
+    transform: scale(0.8, 0.8);
+  }
+
+  .GridSquare.wall {
+    animation: walling 250ms 1;
+    background-color: steelblue;
+  }
+
+  .GridSquare.searched {
+    animation: searching 500ms 1;
+    background-color: rgb(85, 172, 85);
+  }
+
+  @keyframes walling {
+    from {background-color: bisque;}
+    to {background-color: steelblue;}
+  }
+  @keyframes searching {
+    from {background-color: bisque;}
+    to {background-color: rgb(85, 172, 85);}
+  }
+  .GridSquare.start {
+    background-color: seagreen;
+  }
+
+  .GridSquare.end {
+    background-color: orange;
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

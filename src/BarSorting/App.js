@@ -121,7 +121,7 @@ class SortingApp extends React.Component {
 
     async sortMergeRecur2(arr, l, r) {
         // inplace merge sort.
-        if (r - l > 1) {
+        if (r > l) {
             let middle = Math.floor((r - l) / 2) + l;
             await this.sortMergeRecur2(arr, l, middle);
             await this.sortMergeRecur2(arr, middle, r);
@@ -243,6 +243,24 @@ class SortingApp extends React.Component {
         };
     };
 
+    async sortQuickRecur2(arr, l, r) {
+        if (r > l) {
+            let pivot = arr[r];
+            let trail = l - 1;
+            for (let pointer = l; pointer < r; pointer++) {
+                if (arr[pointer] < pivot) {
+                    this.swap(arr, pointer, ++trail);
+                    await this.slowRender(arr);
+                };
+            };
+            this.swap(arr, r, trail + 1);
+            await this.slowRender(arr);
+            await this.sortQuickRecur2(arr, l, trail);
+            await this.sortQuickRecur2(arr, trail + 2, r);
+
+        };
+    };
+
     async sortHeap() {
         var arr = this.state.blocks
         var boundry = arr.length
@@ -294,11 +312,11 @@ class SortingApp extends React.Component {
             <div className="list-group shadow-lg border rounded">
                 <div className="bg-light list-group-item">
                     <div className="container-fluid">
-                        <SortingOptions updateSort={this.updateSort} startSort={this.startSort} updateSize={this.make_bars} sortSize={this.state.sortSize} sortValue={this.state.sortValue} sorting={this.sorting}/>
+                        <SortingOptions updateSort={this.updateSort} startSort={this.startSort} updateSize={this.make_bars} sortSize={this.state.sortSize} sortValue={this.state.sortValue} sorting={this.sorting} />
                     </div>
                 </div>
                 <div className="list-group-item">
-                    <div className="container justify-content-center sorting ">
+                    <div className="container justify-content-center sorting bottom">
                         {this.state.blocks.map((number) => <div className="sortable" key={number} style={{ height: (number) + 1 + "%", backgroundColor: `hsl(177, 70%, ${60 - (number) * 0.5}%)` }}></div>)}
                     </div>
                 </div>

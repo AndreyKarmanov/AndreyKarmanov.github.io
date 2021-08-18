@@ -4,6 +4,7 @@ import {
     NavLink,
     HashRouter
 } from "react-router-dom";
+import GraphApp from "./Array/GraphApp.js";
 import SortingApp from './BarSorting/App.js';
 import DataStructures from "./Data Structures/DataStructures.js";
 import TreeApp from './TreeApp.js'
@@ -32,7 +33,12 @@ class SinglePage extends Component {
                                 </NavLink>
                             </li>
                             <li>
-                                TODO: 
+                                <NavLink to='/GraphSearchBasic'>
+                                    GraphApp
+                                </NavLink>
+                            </li>
+                            <li>
+                                TODO:
                                 <ul>
                                     <li>
                                         Skip lists visualizer
@@ -55,6 +61,7 @@ class SinglePage extends Component {
                 <Route path='/Sorting' component={SortingApp} />
                 <Route path='/Trees' component={TreeApp} />
                 <Route path='/DataStructures' component={DataStructures} />
+                <Route path='/GraphSearchBasic' component={GraphApp} />
 
             </HashRouter>
         );

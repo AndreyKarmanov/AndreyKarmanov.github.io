@@ -104,7 +104,7 @@ class DataStructuresApp extends React.Component {
 
     render() {
         return (
-            <div className="vh-100">
+            <div className="h-100">
                 <div className="list-group shadow-lg border rounded h-75">
                     <div className="bg-light list-group-item">
                         <div className="container-fluid">
@@ -115,7 +115,6 @@ class DataStructuresApp extends React.Component {
                         <Draggable>
                             <div>
                                 <SkipListVisualizer structure={this.skiplist} className="draggable" />
-
                             </div>
                         </Draggable>
 
