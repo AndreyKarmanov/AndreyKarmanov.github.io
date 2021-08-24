@@ -212,20 +212,36 @@
   }
 
   .GridSquare.searched {
-    animation: searching 500ms 1;
+    animation: searching 250ms 1;
     background-color: rgb(85, 172, 85);
   }
 
   @keyframes walling {
-    from {background-color: bisque;}
-    to {background-color: steelblue;}
+    from {
+      background-color: bisque;
+    }
+
+    to {
+      background-color: steelblue;
+    }
   }
+
   @keyframes searching {
-    from {background-color: bisque;}
-    to {background-color: rgb(85, 172, 85);}
+    from {
+      background-color: bisque;
+    }
+
+    to {
+      background-color: rgb(85, 172, 85);
+    }
   }
+
   .GridSquare.start {
     background-color: seagreen;
+  }
+
+  .GridSquare.Path {
+    background-color: springgreen;
   }
 
   .GridSquare.end {

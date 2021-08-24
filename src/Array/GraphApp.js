@@ -13,6 +13,7 @@
 
 // matrix class
 // do I use a grid or do I use a linked thing?
+import PriorityQueue from "priorityqueue";
 import React from "react";
 class Square {
     constructor(x, y, highlight = 'empty') {
@@ -21,6 +22,8 @@ class Square {
         this.highlight = highlight;
         this.explored = false;
         this.passable = true;
+        this.previous = null;
+        this.distance = Infinity;
     };
 
     clicked() {
@@ -43,7 +46,7 @@ class Matrix {
     };
 
     solved(square) {
-        if (square.x === this.x - 2 && square.y === this.y - 2) {
+        if (square && square.x === this.x - 2 && square.y === this.y - 2) {
             square.explored = true;
             return true;
         };
@@ -185,8 +188,49 @@ class GraphApp extends React.Component {
             }, 150);
         });
     };
+    async Dijkstras(square) {
+        const numericCompare = (a, b) => (a.distance > b.distance ? 1 : a.distance < b.distance ? -1 : 0);
+        const PQ = new PriorityQueue({numericCompare});
+        square.distance = 0;
+        PQ.push(square);
+        while (PQ.length > 0 && !this.state.matrix.solved()) {
+            square = PQ.pop();
+            if (this.state.matrix.solved(square)) {
+                return;
+            };
+            if (square.x !== 1 && square.y !== 1) {
+                square.highlight = 'searched';
+            }
+            square.explored = true;
+            let currDist = square.distance + 1;
+            await this.slowRender();
+            for (let vertex of this.state.matrix.children(square)) {
+                if (vertex.highlight === "empty") {
+                    if (currDist < vertex.distance) {
+                        vertex.distance = currDist;
+                        vertex.previous = square;
+                        PQ.push(vertex);
+                    }
+                } else if (this.state.matrix.solved(vertex)) {
+                    vertex.previous = square;
+                    let sizing = this.SIZES[this.state.size];
+                    square = this.state.matrix.grid[sizing[0] - 2][sizing[1] - 2];
+                    let previous = square.previous;
+                    while (previous) {
+                        await this.slowRender();
+                        previous.highlight = "Path";
+                        previous = previous.previous;
+                    };
+                    this.state.matrix.grid[1][1].highlight = "start";
+                    return;
+                };
+            }
+        }
+
+    }
+
     async DFS(square) {
-        for (let vertex of this.state.matrix.children(square)) {
+        for (let vertex of [...this.state.matrix.children(square)]) {
             if (this.state.matrix.solved(vertex)) {
                 return;
             };

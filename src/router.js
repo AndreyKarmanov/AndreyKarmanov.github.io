@@ -4,7 +4,7 @@ import {
     NavLink,
     HashRouter
 } from "react-router-dom";
-import GraphApp from "./Array/GraphApp.js";
+import GraphApp from "./Array/GraphApp2.js";
 import SortingApp from './BarSorting/App.js';
 import DataStructures from "./Data Structures/DataStructures.js";
 import TreeApp from './TreeApp.js'
