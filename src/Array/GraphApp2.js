@@ -53,6 +53,11 @@ class Square {
         this.passable = false;
         this.highlight = "wall";
     };
+
+    setEmpty() {
+        this.passable = true;
+        this.highlight = "empty";
+    };
 };
 
 class Matrix {
@@ -76,8 +81,11 @@ class Matrix {
     };
 
     gen_maze() {
+        this.gen_maze_recur(1, 1, this.x - 2, this.y - 2);
         this.wallBox(0, 0, this.x - 1, this.y - 1);
-        this.gen_maze_recur(0, 0, this.x - 1, this.y - 1);
+
+        // this.gen_maze_recur(1, 1, 4, 4);
+        // this.wallBox(0, 0, 5, 5);
     };
 
     wallBox(x1, y1, x2, y2) {
@@ -95,11 +103,18 @@ class Matrix {
     randRange(a, b) {
         return parseInt(a + Math.random() * (b - a));
     };
-
     async gen_maze_recur(x1, y1, x2, y2) {
-        if (x2 - x1 > 2 && y2 - y1 > 2) {
-            let xMid = Math.floor((x2 - x1) / 2);
-            let yMid = Math.floor((y2 - y1) / 2);
+        if (x2 - x1 > 1 && y2 - y1 > 1) {
+            let xMid, yMid = 0;
+
+            if (x2 - x1 > 11 && y2 - y1 > 11) {
+                xMid = x1 + Math.floor((x2 - x1) / 2);
+                yMid = y1 + Math.floor((y2 - y1) / 2);
+
+            } else {
+                xMid = this.randRange(x1 + 1, x2 - 1);
+                yMid = this.randRange(y1 + 1, y2 - 1);
+            };
 
             for (let x = x1; x <= x2; x++) {
                 this.grid[x][yMid].setWall();
@@ -107,20 +122,65 @@ class Matrix {
             for (let y = y1; y <= y2; y++) {
                 this.grid[xMid][y].setWall();
             };
+            this.gen_maze_recur(x1, y1, xMid - 1, yMid - 1);
+            this.gen_maze_recur(x1, yMid + 1, xMid - 1, y2);
+            this.gen_maze_recur(xMid + 1, y1, x2, yMid - 1);
+            this.gen_maze_recur(xMid + 1, yMid + 1, x2, y2);
 
-            this.grid[this.randRange(x1+ 1, xMid)][yMid].clicked();
-            this.grid[xMid][this.randRange(y1+ 1, yMid)].clicked();
-            this.grid[this.randRange(xMid, x2 - 1)][yMid].clicked();
-            this.grid[xMid][this.randRange(yMid, y2 - 1)].clicked();
+            switch (this.randRange(0, 3)) {
+                case 0:
+                    this.createSpaceOnLine(xMid + 1, x2, yMid, false);
+                    this.createSpaceOnLine(x1, xMid - 1, yMid, false);
+                    this.createSpaceOnLine(yMid + 1, y2, xMid, true);
+                    break;
+                case 1:
+                    this.createSpaceOnLine(y1, yMid - 1, xMid, true);
+                    this.createSpaceOnLine(x1, xMid - 1, yMid, false);
+                    this.createSpaceOnLine(yMid + 1, y2, xMid, true);
+                    break;
+                case 2:
+                    this.createSpaceOnLine(y1, yMid - 1, xMid, true);
+                    this.createSpaceOnLine(xMid + 1, x2, yMid, false);
+                    this.createSpaceOnLine(yMid + 1, y2, xMid, true);
+                    break;
+                case 3:
+                    this.createSpaceOnLine(y1, yMid - 1, xMid, true);
+                    this.createSpaceOnLine(xMid + 1, x2, yMid, false);
+                    this.createSpaceOnLine(x1, xMid - 1, yMid, false);
+                    break;
+                default:
+                    break;
+            };
+        };
+    };
 
+    numPassableAround(x, y, swap = false) {
+        if (swap) {
+            [x, y] = [y, x];
+        };
 
-            this.gen_maze_recur(x1, y1, xMid, yMid);
-            this.gen_maze_recur(x1, yMid, xMid, y2);
-            // this.gen_maze_recur(x1, yMid)
-            // this.gen_maze_recur(x1 + 1, y1 + 1, xMid, yMid);
-            // this.gen_maze_recur(x1 + 1, yMid + 1, xMid, y2);
-            // this.gen_maze_recur(xMid + 1, y1 + 1, x2, yMid);
-            // this.gen_maze_recur(xMid, yMid, x2, y2);
+        let count = 0;
+        for (let neighboor of this.children(x, y)) {
+            if (neighboor.passable) {
+                count++;
+            };
+        };
+        return count;
+    };
+
+    createSpaceOnLine(fromCord, toCord, staleCord, modifIsY) {
+        let possible = [];
+        for (; fromCord <= toCord; fromCord++) {
+            if (this.numPassableAround(fromCord, staleCord, modifIsY) > 1) {
+                possible.push(fromCord);
+            };
+        };
+        if (possible.length > 0) {
+            if (modifIsY) {
+                this.grid[staleCord][possible[this.randRange(0, possible.length)]].setEmpty();
+            } else {
+                this.grid[possible[this.randRange(0, possible.length)]][staleCord].setEmpty();
+            };
         };
     };
 
@@ -146,10 +206,11 @@ class Matrix {
         return 0 <= x && x < this.x && 0 <= y && y < this.y;
     };
 
-    *children(square) {
+
+    *children(squareX, squareY) {
         let x, y = null;
         for (let dir of this.DIRECTIONS) {
-            if (this.inbounds((x = square.x - dir[0]), (y = square.y - dir[1]))) {
+            if (this.inbounds((x = squareX - dir[0]), (y = squareY - dir[1]))) {
                 yield this.grid[x][y];
             };
         };
@@ -175,7 +236,12 @@ class GraphOptions extends React.Component {
                     <input type="range" className="form-range" id="rangeSelect" disabled={this.props.searching} min="0" max="3" step="1" defaultValue={this.props.size} onInput={(e) => this.props.updateSize(e.target.value)} />
                 </div>
                 <hr className="mt-4" />
-                <button className={"btn btn-success" + (this.props.searching ? ' disabled' : ' ')} onClick={this.props.startSearch}>{this.props.sorting ? 'Searching...' : 'Search'}</button>
+                <div className="col-6">
+                    <button className={"w-100 btn btn-success" + (this.props.searching ? ' disabled' : ' ')} onClick={this.props.startSearch}>{this.props.sorting ? 'Searching...' : 'Search'}</button>
+                </div>
+                <div className="col-6">
+                    <button className={"w-100 btn btn-success" + (this.props.searching ? ' disabled' : ' ')} onClick={() => { this.props.updateSize(this.props.size) }}>{this.props.sorting ? 'Regenerate' : 'New Maze'}</button>
+                </div>
             </div>
         );
     };
@@ -215,12 +281,12 @@ class RenderMatrix extends React.Component {
 class GraphApp extends React.Component {
     constructor(props) {
         super(props);
-        this.SIZES = [[10, 5], [48, 32], [24, 12], [32, 16]];
+        this.SIZES = [[10, 5], [25, 25], [24, 12], [32, 16]];
         this.state = {
             search: 'DIJ',
             searching: false,
             size: 1,
-            matrix: new Matrix(39, 39)
+            matrix: new Matrix(25, 25)
         };
 
 
@@ -257,7 +323,7 @@ class GraphApp extends React.Component {
             this.forceUpdate();
             setTimeout(() => {
                 resolve();
-            }, 75);
+            }, 5);
         });
     };
 
@@ -288,7 +354,6 @@ class GraphApp extends React.Component {
     };
 
     async searchDijkstras(square) {
-
         var PQ = binary_heap();
         square.distance = 0;
         PQ.enqueue(0, square);
@@ -300,7 +365,7 @@ class GraphApp extends React.Component {
             } else {
                 // square.explored, therefore need a render.
                 await this.slowRender();
-                for (let vertex of [...this.state.matrix.children(square)]) {
+                for (let vertex of [...this.state.matrix.children(square.x, square.y)]) {
                     // if the square is not a wall, isn't explored, and the new distance is shorter.
                     if (vertex.passable && !vertex.explored && square.distance + 1 < vertex.distance) {
                         vertex.distance = square.distance + 1;

@@ -24,33 +24,7 @@
 
 <body>
   <div class="container" id="visualizer">
-    <!-- <div class="list-group shadow-lg border rounded">
-      <div class="bg-light list-group-item">
-        <div class="container-fluid">
-          <div class="row w-100">
-            <div class="col mt-2">
-              <select id="sortSelect" class="form-select">
-                <option selected value="merge">Merge Sort</option>
-                <option value="quick">Quick Sort</option>
-                <option value="heap">Heap Sort</option>
-                <option value="bubble">Bubble Sort</option>
-                <option value="insert">Insertion Sort</option>
-                <option value="Selection">selection Sort</option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label for="rangeSelect" class="form-label">Array Size</label>
-              <input type="range" class="form-range" id="rangeSelect" min="10" max="100" step="1" />
-            </div>
-            <hr class="mt-4" />
-            <button id="sort" class="btn btn-success disabled">Sort</button>
-          </div>
-        </div>
-      </div>
-      <div class="list-group-item">
-        <div class="container sorting" id="visualizer"></div>
-      </div>
-    </div> -->
+
   </div>
 </body>
 <style>
@@ -63,19 +37,6 @@
     margin-bottom: 15px;
   }
 
-  /* .draggable {
-    position: absolute;
-    cursor: grab;
-
-    padding: 10px;
-    border-radius: 50%;
-    border: 2px solid black;
-    background-color: antiquewhite;
-  }
-
-  .draggable:active {
-    cursor: grabbing;
-  } */
 
   .limited {
     -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
@@ -190,7 +151,7 @@
     user-select: none;
     padding-bottom: 100%;
     height: 100%;
-    background-color: bisque;
+    background-color: rgb(171, 206, 235);
     transition-duration: 100ms;
     transition: width height ease-in-out;
   }
@@ -211,14 +172,9 @@
     background-color: steelblue;
   }
 
-  .GridSquare.searched {
-    animation: searching 250ms 1;
-    background-color: rgb(85, 172, 85);
-  }
-
   @keyframes walling {
     from {
-      background-color: bisque;
+      background-color: rgb(171, 206, 235);
     }
 
     to {
@@ -226,22 +182,27 @@
     }
   }
 
+  .GridSquare.searched {
+    animation: searching 250ms 1;
+    background-color: rgb(136, 214, 171);
+  }
+
   @keyframes searching {
     from {
-      background-color: bisque;
+      background-color: rgb(171, 206, 235);
     }
 
     to {
-      background-color: rgb(85, 172, 85);
+      background-color: rgb(136, 214, 171);
     }
   }
 
   .GridSquare.start {
-    background-color: seagreen;
+    background-color: green;
   }
 
   .GridSquare.Path {
-    background-color: springgreen;
+    background-color: rgb(64, 180, 116);
   }
 
   .GridSquare.end {
