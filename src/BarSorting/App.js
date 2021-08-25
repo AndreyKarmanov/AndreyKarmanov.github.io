@@ -121,37 +121,13 @@ class SortingApp extends React.Component {
 
     async sortMergeRecur2(arr, l, r) {
         // inplace merge sort.
-        if (r > l) {
+        if (r - 1> l) {
             let middle = Math.floor((r - l) / 2) + l;
             await this.sortMergeRecur2(arr, l, middle);
             await this.sortMergeRecur2(arr, middle, r);
             await this.sortMergeMerge2(arr, l, middle, r);
         };
     };
-
-    // async sortMergeMerge(arr, l, middle, r) {
-    //     let left = arr.slice(l, middle);
-    //     let right = arr.slice(middle, r);
-    //     let pointer = l;
-
-    //     while (left.length && right.length) {
-    //         if (left[0] < right[0]) {
-    //             arr[pointer++] = left.shift();
-    //         } else {
-    //             arr[pointer++] = right.shift();
-    //         };
-    //         await this.slowRender(arr)
-    //     };
-
-    //     while (left.length) {
-    //         arr[pointer++] = left.shift();
-    //         await this.slowRender(arr)
-    //     };
-    //     while (right.length) {
-    //         arr[pointer++] = right.shift();
-    //         await this.slowRender(arr)
-    //     };
-    // };
 
     async sortMergeMerge2(arr, l, middle, r) {
         // inplace merge.
@@ -175,34 +151,6 @@ class SortingApp extends React.Component {
             await this.slowRender(arr)
         };
     };
-
-    // async sortMergeRecur(arr, l, r) {
-    //     if (arr.slice(l, r).length > 1) {
-    //         let middle = Math.floor(arr.slice(l, r).length / 2)
-    //         let a = await this.sortMergeRecur(arr, l, l + middle)
-    //         let b = await this.sortMergeRecur(arr, l + middle, r)
-    //         let little = null
-    //         let pointer = l
-    //         while (pointer < r) {
-    //             if (a.length > 0) {
-    //                 if (b.length > 0) {
-    //                     if (a[0] > b[0]) {
-    //                         little = b.shift();
-    //                     } else {
-    //                         little = a.shift();
-    //                     };
-    //                 } else {
-    //                     little = a.shift();
-    //                 };
-    //             } else {
-    //                 little = b.shift();
-    //             };
-    //             arr[pointer++] = little;
-    //             await this.slowRender(arr);
-    //         };
-    //     };
-    //     return arr.slice(l, r)
-    // };
 
     async sortInsertion() {
         let a = this.state.blocks
