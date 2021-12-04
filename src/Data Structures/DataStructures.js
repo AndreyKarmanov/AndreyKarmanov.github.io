@@ -16,14 +16,14 @@ class DataStructureInterface extends React.PureComponent {
                 <div className="col-6 mt-2">
                     <select id="sortSelect" className="form-select" onChange={(e) => this.props.structureChange(e)} value={this.props.structureValue}>
                         <option value="Lists" disabled={true}>Lists:</option>
-                        <option value="list">ArrayList</option>
-                        <option value="array">Array</option>
-                        <option value="linked list">Doubly Linked</option>
+                        <option value="list" disabled={true}>ArrayList</option>
+                        <option value="array" disabled={true}>Array</option>
+                        <option value="linked list" disabled={true}>Doubly Linked</option>
                         <option value="skiplist">Skip List</option>
                         <option value="Trees" disabled={true}>Trees:</option>
-                        <option value="redblack">Red Black</option>
-                        <option value="avl">AVL</option>
-                        <option value="splay">Splay</option>
+                        <option value="redblack" disabled={true}>Red Black</option>
+                        <option value="avl" disabled={true}>AVL</option>
+                        <option value="splay" disabled={true}>Splay</option>
                     </select>
                 </div>
                 <hr className="mt-4" />

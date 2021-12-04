@@ -119,7 +119,7 @@ class Matrix {
     create_col(x, y) {
         let col = [];
         for (let row = 0; row < y; row++) {
-            col.push(new Square(x, row, 'empty', Math.sqrt(this.distanceTo(x, y, this.x - 2, this.y - 2))));
+            col.push(new Square(x, row, 'empty', this.distanceTo(x, row, this.x - 1, this.y - 1)));
         };
         return col;
     };
@@ -171,7 +171,8 @@ class Matrix {
     };
 
 
-
+    // try making prims algo because you actually red the steps on wikipedia instead of not reading
+    //
     async gen_maze_recur(x1, y1, x2, y2) {
         if (x2 - x1 > 1 && y2 - y1 > 1) {
             let xMid, yMid = 0;
@@ -294,8 +295,7 @@ class RenderMatrix extends React.Component {
                                 onMouseDown={() => {
                                     square.clicked()
                                     this.forceUpdate();
-                                }}
-                            />
+                                }}/>
                         )}
                     </div>
                 )}
@@ -385,36 +385,7 @@ class GraphApp extends React.Component {
             };
         };
     };
-
-    // async searchAstar(square) {
-    //     console.log('hello')
-    //     var PQ = binary_heap();
-    //     PQ.enqueue(square.distanceFromEnd, square);
-    //     while (PQ.size() > 0) {
-    //         let square = PQ.dequeue();
-    //         if (square.explore()) {
-    //             break;
-    //         } else {
-    //             await this.slowRender();
-    //             for (let vertex of this.state.matrix.children(square.x, square.y)) {
-    //                 if (vertex.passable && !vertex.explored && square.distance + 1 < vertex.distance) {
-    //                     vertex.distance = square.distance + 1;
-    //                     vertex.previous = square;
-    //                     PQ.enqueue(vertex.distanceFromEnd, vertex);
-    //                 };
-    //             };
-    //         };
-    //     };
-    //     square = this.state.matrix.ending().previous;
-    //     if (!square) {
-    //         return;
-    //     };
-    //     while (square.previous) {
-    //         square.highlight = "Path";
-    //         square = square.previous;
-    //         await this.slowRender();
-    //     };
-    // };
+ 
     async searchAstar(square) {
         var PQ = binary_heap();
         square.distance = 0;
@@ -429,7 +400,7 @@ class GraphApp extends React.Component {
                 await this.slowRender();
                 for (let vertex of [...this.state.matrix.children(square.x, square.y)]) {
                     // if the square is not a wall, isn't explored, and the new distance is shorter.
-                    if (vertex.passable && !vertex.explored && square.distance + 1 < vertex.distance) {
+                    if (vertex.passable && !vertex.explored && square.distance + 2 < vertex.distance) {
                         vertex.distance = square.distance + 1;
                         vertex.previous = square;
                         PQ.enqueue(-vertex.distanceFromEnd, vertex);

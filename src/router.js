@@ -14,7 +14,7 @@ class SinglePage extends Component {
         return (
             <HashRouter>
                 <br />
-                <div className="bg-light list-group-item">
+                <div className="list-group list-group-item shadow-lg border rounded">
                     <div className="container-fluid">
                         <ul>
                             <li>
@@ -22,11 +22,11 @@ class SinglePage extends Component {
                                     Sorting
                                 </NavLink>
                             </li>
-                            <li>
+                            {/* <li>
                                 <NavLink to='/Trees'>
                                     Trees
                                 </NavLink>
-                            </li>
+                            </li> */}
                             <li>
                                 <NavLink to='/DataStructures'>
                                     Data Structures
@@ -37,7 +37,7 @@ class SinglePage extends Component {
                                     GraphApp
                                 </NavLink>
                             </li>
-                            <li>
+                            {/* <li>
                                 TODO:
                                 <ul>
                                     <li>
@@ -53,7 +53,7 @@ class SinglePage extends Component {
                                         codewars
                                     </li>
                                 </ul>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </div>
@@ -62,7 +62,6 @@ class SinglePage extends Component {
                 <Route path='/Trees' component={TreeApp} />
                 <Route path='/DataStructures' component={DataStructures} />
                 <Route path='/GraphSearchBasic' component={GraphApp} />
-
             </HashRouter>
         );
     };
