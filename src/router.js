@@ -15,47 +15,29 @@ class SinglePage extends Component {
             <HashRouter>
                 <br />
                 <div className="list-group list-group-item shadow-lg border rounded">
-                    <div className="container-fluid">
-                        <ul>
-                            <li>
-                                <NavLink to='/Sorting'>
+                    <ul class="nav justify-content-center">
+                        <li class="nav-item mx-1">
+                            <NavLink to='/Sorting'>
+                                <button type="button" class="btn btn-outline-primary">
                                     Sorting
-                                </NavLink>
-                            </li>
-                            {/* <li>
-                                <NavLink to='/Trees'>
-                                    Trees
-                                </NavLink>
-                            </li> */}
-                            <li>
-                                <NavLink to='/DataStructures'>
+                                </button>
+                            </NavLink>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <NavLink to='/DataStructures'>
+                                <button type="button" class="btn btn-outline-primary">
                                     Data Structures
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to='/GraphSearchBasic'>
+                                </button>
+                            </NavLink>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <NavLink to='/GraphSearchBasic'>
+                                <button type="button" class="btn btn-outline-primary">
                                     GraphApp
-                                </NavLink>
-                            </li>
-                            {/* <li>
-                                TODO:
-                                <ul>
-                                    <li>
-                                        Skip lists visualizer
-                                    </li>
-                                    <li>
-                                        various BST visualizer
-                                    </li>
-                                    <li>
-                                        pathfinding algos
-                                    </li>
-                                    <li>
-                                        codewars
-                                    </li>
-                                </ul>
-                            </li> */}
-                        </ul>
-                    </div>
+                                </button>
+                            </NavLink>
+                        </li>
+                    </ul>
                 </div>
                 <br />
                 <Route path='/Sorting' component={SortingApp} />
