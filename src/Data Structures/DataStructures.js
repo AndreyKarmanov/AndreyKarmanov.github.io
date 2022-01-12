@@ -12,7 +12,7 @@ class DataStructureInterface extends React.PureComponent {
 
     render() {
         return (
-            <div className="row w-100" style={{ margin: "0 0" }}>
+            <div className="row w-100">
                 <div className="col-6 mt-2">
                     <select id="sortSelect" className="form-select" onChange={(e) => this.props.structureChange(e)} value={this.props.structureValue}>
                         <option value="Lists" disabled={true}>Lists:</option>
@@ -39,9 +39,9 @@ class DataStructureInterface extends React.PureComponent {
                         <button className="btn btn-danger" onClick={() => { this.props.delValue(this.deleteValue.current.value); this.deleteValue.current.value = ''; }}>Delete Value</button>
                     </div>
                 </div>
-                <div className="col-2 mt-2">
+                {/* <div className="col-2 mt-2">
                     <button className="btn btn-danger" onClick={this.props.clearStructure}>Clear All</button>
-                </div>
+                </div> */}
             </div>
         );
     };

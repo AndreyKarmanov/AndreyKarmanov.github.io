@@ -4,7 +4,7 @@ class SortingOptions extends React.PureComponent {
 
     render() {
         return (
-            <div className="row w-100" style={{ margin: "0 0" }}>
+            <div className="row w-100">
                 <div className="col-6 mt-2">
                     <select id="sortSelect" className="form-select" disabled={this.props.sorting} onChange={this.props.updateSort} value={this.props.sortValue}>
                         <option value="merge">Merge Sort</option>
@@ -12,7 +12,7 @@ class SortingOptions extends React.PureComponent {
                         <option value="heap">Heap Sort</option>
                         <option value="bubble">Bubble Sort</option>
                         <option value="insert">Insertion Sort</option>
-                        <option value="selection">selection Sort</option>
+                        <option value="selection">Selection Sort</option>
                     </select>
                 </div>
                 <div className="col-6">
