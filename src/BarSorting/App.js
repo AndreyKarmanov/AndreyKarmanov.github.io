@@ -25,6 +25,7 @@ class SortingApp extends React.Component {
         this.sortMergeRecur2 = this.sortMergeRecur2.bind(this);
         this.sortQuickRecur = this.sortQuickRecur.bind(this);
         this.sorting = false;
+        this.sorted = false;
     };
 
     componentDidMount() {
@@ -56,6 +57,7 @@ class SortingApp extends React.Component {
         this.setState({
             blocks: this.fy([...Array(parseInt(amount)).keys()])
         });
+        this.sorted = false
     };
 
     updateSort(e) {
@@ -69,13 +71,14 @@ class SortingApp extends React.Component {
     };
 
     startSort() {
-        if (this.sorting) {
+        if (this.sorting || this.sorted) {
             return
         };
         this.sorting = true
         console.log(this.state.sortValue, 'selected')
         this.sortTypes[this.state.sortValue].bind(this)().then(() => {
             this.sorting = false
+            this.sorted = true
             console.log('sorting complete')
             this.forceUpdate();
         });
