@@ -15,29 +15,29 @@ class introduction extends React.PureComponent {
                     <ul className="nav justify-content-center">
                         <li className="nav-item mx-1">
                             <a href="https://linkedin.com/in/andrey-karmanov" >
-                                <img className="rounded" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&amp;logo=linkedin&amp;logoColor=white" />
+                                <img className="rounded" alt="LinkedIn link" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&amp;logo=linkedin&amp;logoColor=white" />
                             </a>
                         </li>
                         <li className="nav-item mx-1">
                             <a href="https://github.com/AndreyKarmanov" >
-                                <img className="rounded" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
+                                <img className="rounded" alt="Github link" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
                             </a>
                         </li>
                         <li className="nav-item mx-1">
                             <a href="/Andrey_Karmanov_Resume_8-2021.pdf" >
-                                <img className="rounded" src="/Express.svg" />
+                                <img className="rounded" alt="Resume link" src="/Express.svg" />
                             </a>
                         </li>
                     </ul>
                     <hr />
-                    <div className="continer-fluid row">
+                    {/* <div className="continer-fluid row">
                         <div className="col-6">
-                            *insert BS about how amazing of a person I am*
+                            *Description or life story?*
                         </div>
                         <div className="col-6">
                             *cute pic of me*
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );

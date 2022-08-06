@@ -19,24 +19,24 @@ class SinglePage extends Component {
                 <div className="list-group list-group-item shadow-lg border rounded">
                     <h2 className="text-center">Projects</h2>
                     <hr/>
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item mx-1">
+                    <ul className="nav justify-content-center">
+                        <li className="nav-item mx-1">
                             <NavLink to='/Sorting'>
-                                <button type="button" class="btn btn-outline-primary">
+                                <button type="button" className="btn btn-outline-primary">
                                     Sorting Visual
                                 </button>
                             </NavLink>
                         </li>
-                        <li class="nav-item mx-1">
+                        <li className="nav-item mx-1">
                             <NavLink to='/DataStructures'>
-                                <button type="button" class="btn btn-outline-primary">
+                                <button type="button" className="btn btn-outline-primary">
                                     Skip List Visual
                                 </button>
                             </NavLink>
                         </li>
-                        <li class="nav-item mx-1">
+                        <li className="nav-item mx-1">
                             <NavLink to='/GraphSearchBasic'>
-                                <button type="button" class="btn btn-outline-primary">
+                                <button type="button" className="btn btn-outline-primary">
                                     Maze Solver
                                 </button>
                             </NavLink>

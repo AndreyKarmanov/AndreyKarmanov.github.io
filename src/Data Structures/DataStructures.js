@@ -1,6 +1,5 @@
 import React, { createRef } from 'react';
 import Draggable from 'react-draggable';
-import LinkedApp, { Linked } from './Linked.js';
 import SkipListVisualizer, { SkipList } from './SkipList2.js';
 
 class DataStructureInterface extends React.PureComponent {
@@ -59,7 +58,6 @@ class DataStructuresApp extends React.Component {
         this.addValue = this.addValue.bind(this);
         this.delValue = this.delValue.bind(this);
         this.animate = this.animate.bind(this);
-        this.list = new Linked(this.animate, this.animate, this.animate)
         this.skiplist = new SkipList(this.animate)
 
     };
